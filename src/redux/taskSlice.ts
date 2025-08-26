@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { Difficulty } from "../types/difficulty";
 
 interface Task {
   id: number;
   title: string;
-  level: "easy" | "medium" | "high";
+  level: Difficulty;
 }
 
 interface TaskState {
@@ -35,8 +36,8 @@ const taskSlice = createSlice({
       state,
       action: PayloadAction<{
         title: string;
-        level: "easy" | "medium" | "high";
-      }>
+        level: Difficulty;
+      }>,
     ) => {
       state.tasks.push({
         id: Date.now(),
@@ -48,7 +49,7 @@ const taskSlice = createSlice({
     removeTask: (state, action: PayloadAction<number>) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       state.completed = state.completed.filter(
-        (task) => task.id !== action.payload
+        (task) => task.id !== action.payload,
       );
       saveState(state);
     },
@@ -62,7 +63,7 @@ const taskSlice = createSlice({
     },
     undoTask: (state, action: PayloadAction<number>) => {
       const index = state.completed.findIndex(
-        (task) => task.id === action.payload
+        (task) => task.id === action.payload,
       );
       if (index !== -1) {
         const task = state.completed[index];
@@ -71,18 +72,28 @@ const taskSlice = createSlice({
       }
       saveState(state);
     },
-    editTask: (state, action: PayloadAction<{ id: number; title: string }>) => {
+    editTask: (
+      state,
+      action: PayloadAction<{
+        id: number;
+        title: string;
+        level: Difficulty;
+      }>,
+    ) => {
       const task = state.tasks.find((t) => t.id === action.payload.id);
       if (task) {
         task.title = action.payload.title;
+        task.level = action.payload.level;
       }
 
       const completedTask = state.completed.find(
-        (t) => t.id === action.payload.id
+        (t) => t.id === action.payload.id,
       );
       if (completedTask) {
         completedTask.title = action.payload.title;
+        completedTask.level = action.payload.level;
       }
+
       saveState(state);
     },
   },
