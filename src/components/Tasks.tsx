@@ -3,7 +3,7 @@ import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import type { RootState, AppDispatch } from "../redux/store";
 import { moveTask } from "../redux/taskSlice";
-import type { Difficulty, Task } from "../types/difficulty";
+import type { Difficulty } from "../types/difficulty";
 import Easy from "./Tasks/Easy";
 import Medium from "./Tasks/Medium";
 import High from "./Tasks/High";
