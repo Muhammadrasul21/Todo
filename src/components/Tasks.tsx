@@ -3,7 +3,7 @@ import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import type { RootState, AppDispatch } from "../redux/store";
 import { moveTask } from "../redux/taskSlice";
-import type { Difficulty } from "../types/difficulty";
+import type { Difficulty, Task } from "../types/difficulty";
 import Easy from "./Tasks/Easy";
 import Medium from "./Tasks/Medium";
 import High from "./Tasks/High";
@@ -12,7 +12,7 @@ import Completed from "./Tasks/Completed";
 const Tasks = () => {
   const tasks = useSelector((state: RootState) => state.task.tasks);
   const completedTasks = useSelector(
-    (state: RootState) => state.task.completed
+    (state: RootState) => state.task.completed,
   );
   const dispatch = useDispatch<AppDispatch>();
 
@@ -21,17 +21,20 @@ const Tasks = () => {
 
     if (!destination) return;
 
+    if (destination.droppableId === "completed") {
+      return;
+    }
+
     if (source.droppableId !== destination.droppableId) {
       const newLevel = destination.droppableId as Difficulty;
       dispatch(
         moveTask({
           taskId: Number(draggableId),
           newLevel: newLevel,
-        })
+        }),
       );
     }
   };
-
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex gap-8">

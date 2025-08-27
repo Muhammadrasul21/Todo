@@ -25,7 +25,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   const startEdit = (
     id: number,
     currentTitle: string,
-    currentLevel: Difficulty
+    currentLevel: Difficulty,
   ) => {
     setEditId(id);
     setEditValue(currentTitle);
