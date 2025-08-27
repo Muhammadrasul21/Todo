@@ -37,7 +37,7 @@ const taskSlice = createSlice({
       action: PayloadAction<{
         title: string;
         level: Difficulty;
-      }>,
+      }>
     ) => {
       state.tasks.push({
         id: Date.now(),
@@ -49,7 +49,7 @@ const taskSlice = createSlice({
     removeTask: (state, action: PayloadAction<number>) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       state.completed = state.completed.filter(
-        (task) => task.id !== action.payload,
+        (task) => task.id !== action.payload
       );
       saveState(state);
     },
@@ -63,7 +63,7 @@ const taskSlice = createSlice({
     },
     undoTask: (state, action: PayloadAction<number>) => {
       const index = state.completed.findIndex(
-        (task) => task.id === action.payload,
+        (task) => task.id === action.payload
       );
       if (index !== -1) {
         const task = state.completed[index];
@@ -78,7 +78,7 @@ const taskSlice = createSlice({
         id: number;
         title: string;
         level: Difficulty;
-      }>,
+      }>
     ) => {
       const task = state.tasks.find((t) => t.id === action.payload.id);
       if (task) {
@@ -87,7 +87,7 @@ const taskSlice = createSlice({
       }
 
       const completedTask = state.completed.find(
-        (t) => t.id === action.payload.id,
+        (t) => t.id === action.payload.id
       );
       if (completedTask) {
         completedTask.title = action.payload.title;
@@ -96,9 +96,19 @@ const taskSlice = createSlice({
 
       saveState(state);
     },
+    moveTask: (
+      state,
+      action: PayloadAction<{ taskId: number; newLevel: Difficulty }>
+    ) => {
+      const task = state.tasks.find((t) => t.id === action.payload.taskId);
+      if (task) {
+        task.level = action.payload.newLevel;
+      }
+      saveState(state);
+    },
   },
 });
 
-export const { addTask, removeTask, doneTask, undoTask, editTask } =
+export const { addTask, removeTask, doneTask, undoTask, editTask, moveTask } =
   taskSlice.actions;
 export default taskSlice.reducer;
