@@ -12,7 +12,7 @@ import Completed from "./Tasks/Completed";
 const Tasks = () => {
   const tasks = useSelector((state: RootState) => state.task.tasks);
   const completedTasks = useSelector(
-    (state: RootState) => state.task.completed,
+    (state: RootState) => state.task.completed
   );
   const dispatch = useDispatch<AppDispatch>();
 
@@ -31,7 +31,7 @@ const Tasks = () => {
         moveTask({
           taskId: Number(draggableId),
           newLevel: newLevel,
-        }),
+        })
       );
     }
   };
